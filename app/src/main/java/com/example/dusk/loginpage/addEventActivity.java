@@ -1,8 +1,8 @@
 package com.example.dusk.loginpage;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -48,7 +48,7 @@ public class addEventActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Event Added", Toast.LENGTH_SHORT);
 
-        Intent intent = new Intent(this, MainPage.class);
+        Intent intent = new Intent(this, MainPageActivity.class);
         intent.putExtra("flag", checkFlag);
         intent.putExtra("eventUpdate", eventList);
         startActivity(intent);

@@ -1,12 +1,12 @@
 package com.example.dusk.loginpage;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -14,19 +14,18 @@ import android.view.MenuItem;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class MainPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainPageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public boolean listOld;
+    public ArrayList<EventClass> eventList = new ArrayList<EventClass>();
+    public String check = "";
+    public String add = "addEvent";
     private ArrayList<CardsJava> exampleList = new ArrayList<>();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private RecyclerView mRecyclerView;
     private Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
-    public boolean listOld;
-    public ArrayList<EventClass> eventList = new ArrayList<EventClass>();
-    public String check = "";
-    public String add = "addEvent";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 
         buildRecyclerView();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mDrawerLayout = findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
@@ -66,7 +65,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -89,11 +88,15 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
             startActivity(intent);
         }
         if (id == R.id.logout){
-            Intent intent = new Intent(this, LoginPage.class);
+            Intent intent = new Intent(this, LoginPageActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        DrawerLayout drawer = findViewById(R.id.drawerLayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -1,8 +1,8 @@
-package com.example.roy.to_do_list;
+package com.example.dusk.loginpage;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+/*
+RegistrationActivity
+** Registers a User into the application
+* */
+public class RegistrationActivity extends AppCompatActivity {
 
     private EditText username_input, email_input, password_input;
     private Button Submit, Reset;
@@ -20,17 +24,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_registration);
 
-        Signup_Message = (TextView) findViewById(R.id.Signup_Message);
-        username_text = (TextView) findViewById(R.id.Username);
-        email_text = (TextView) findViewById(R.id.Email);
-        password_text = (TextView) findViewById(R.id.Password);
-        username_input = (EditText) findViewById(R.id.username_input);
-        email_input = (EditText) findViewById(R.id.email_input);
-        password_input = (EditText) findViewById(R.id.password_input);
-        Submit = (Button) findViewById(R.id.Submit);
-        Reset = (Button) findViewById(R.id.Reset);
+        Signup_Message = findViewById(R.id.Signup_Message);
+        username_text = findViewById(R.id.Username);
+        email_text = findViewById(R.id.Email);
+        password_text = findViewById(R.id.Password);
+        username_input = findViewById(R.id.username_input);
+        email_input = findViewById(R.id.email_input);
+        password_input = findViewById(R.id.password_input);
+        Submit = findViewById(R.id.Submit);
+        Reset = findViewById(R.id.Reset);
 
 
         Signup_Message.setText("Create your account");
@@ -71,9 +75,5 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    //public class Accounts extends AppCompatActivity {
-
-    //}
 
 }
-
