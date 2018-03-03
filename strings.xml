@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">To-Do-List</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="Submit">Submit</string>
+    <string name="Reset">Reset</string>
+    <string name="Signup">Create your account</string>
+    <string name="Username_Error">ERROR!! Username is already being used</string>
+</resources>
