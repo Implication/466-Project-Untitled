@@ -14,18 +14,29 @@ public class SettingsActivity extends AppCompatActivity {
     public static final Pattern VALID_PASSWORD_REGEX =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
     //Object Variables
-    EditText username = (EditText) findViewById(R.id.nameText);
-    EditText password = (EditText) findViewById(R.id.passwordText);
-    EditText newpassword = (EditText) findViewById(R.id.newPasswordText);
-    EditText email = (EditText) findViewById(R.id.emailText);
-    EditText phone = (EditText) findViewById(R.id.phoneText);
-    Button btnCancel = (Button) findViewById(R.id.cancelButton);
-    Button btnSave = (Button) findViewById(R.id.saveButton);
+    EditText username;
+    EditText password;
+    EditText newpassword;
+    EditText email;
+    EditText phone;
+
+    Button btnCancel;
+    Button btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_info_page);
+        setContentView(R.layout.activity_settings);
+
+        username = findViewById(R.id.nameText);
+        password = findViewById(R.id.passwordText);
+        newpassword = findViewById(R.id.newPasswordText);
+        email = findViewById(R.id.emailText);
+        phone = findViewById(R.id.phoneText);
+
+        btnCancel = findViewById(R.id.cancelButton);
+        btnSave = findViewById(R.id.saveButton);
+        getIntent();
     }
 
 
