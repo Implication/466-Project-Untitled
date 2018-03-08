@@ -48,7 +48,14 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         }
 
         if (listOld) {
-                exampleList = db.loadTaskList(intent.getString("username"));
+            for (int i = 0; i < eventList.size(); i++)
+            {
+                //exampleList = db.loadTaskList(intent.getString("username"));
+                String titleTemp = eventList.get(i).getEventTitle();
+                int hourTemp = eventList.get(i).getHour();
+                int minTemp = eventList.get(i).getMin();
+                exampleList.add(new CardsJava(titleTemp, Integer.toString(hourTemp), new DecimalFormat("00").format(minTemp)));
+            }
         }
 
         buildRecyclerView();
