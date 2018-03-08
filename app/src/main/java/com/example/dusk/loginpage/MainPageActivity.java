@@ -26,10 +26,12 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     private RecyclerView mRecyclerView;
     private Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private DbHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DbHelper(this);
         setContentView(R.layout.activity_main_page);
         Bundle intent = getIntent().getExtras();
         if (intent != null) {
@@ -46,13 +48,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         }
 
         if (listOld) {
-            for (int i = 0; i < eventList.size(); i++)
-            {
-                String titleTemp = eventList.get(i).getEventTitle();
-                int hourTemp = eventList.get(i).getHour();
-                int minTemp = eventList.get(i).getMin();
-                exampleList.add(new CardsJava(titleTemp, Integer.toString(hourTemp), new DecimalFormat("00").format(minTemp)));
-            }
+                exampleList = db.loadTaskList(intent.getString("username"));
         }
 
         buildRecyclerView();

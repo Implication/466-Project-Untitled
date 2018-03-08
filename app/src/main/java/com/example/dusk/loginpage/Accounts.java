@@ -8,11 +8,20 @@ public class Accounts {
     private String username;
     private String password;
     private String email;
+    private String fullname;
 
-    public Accounts(String user, String pass, String em) {
+    public Accounts(Accounts acc){
+        this.username = acc.username;
+        this.password = acc.password;
+        this.email = acc.email;
+        this.fullname = acc.fullname;
+    }
+
+    public Accounts(String user, String pass, String em, String fn) {
         username = user;
         password = pass;
         email = em;
+        fullname = fn;
     }
 
     public String get_username() {
@@ -26,4 +35,7 @@ public class Accounts {
     public String get_email() {
         return email;
     }
+
+    public String get_fullname(){return fullname; }
+
 }

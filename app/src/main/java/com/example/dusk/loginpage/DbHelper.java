@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
 
 /*CREATED BY TRAJON FELTON
 * 02/27/18
@@ -31,18 +34,16 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String UTCOL1 = "ID";
     private static final String UTCOL2 = "USERNAME";
-    private static final String UTCOL3 = "PASSWORD";
-    private static final String UTCOL4 = "FIRSTNAME";
-    private static final String UTCOL5 = "LASTNAME";
-    private static final String UTCOL6 = "PHONE";
+    private static final String UTCOL3 = "EMAIL";
+    private static final String UTCOL4 = "PASSWORD";
+    private static final String UTCOL5 = "FULLNAME";
 
 
     private static final String TASK_TABLE = "TASK";
     private static final String TTCOL1 = "taskName";
-    private static final String TTCOL2 = "taskStatus";
-    private static final String TTCOL3 = "taskSubmitted";
-    private static final String TTCOL4 = "taskCompleted";
-    private static final String TTCOL5 = "taskGroup";
+    private static final String TTCOL2 = "taskDesc";
+    private static final String TTCOL3 = "taskHour";
+    private static final String TTCOL4 = "taskMin";
 
     //Constructor
     public DbHelper(Context context){
@@ -54,20 +55,18 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE " + USER_TABLE + " (" +
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                "USERNAME, " +
-                "PASSWORD, " +
-                "FIRSTNAME, " +
-                "LASTNAME, " +
-                "PHONE" +
+                "USERNAME NOT NULL UNIQUE, " +
+                "EMAIL NOT NULL, " +
+                "PASSWORD NOT NULL, " +
+                "FULLNAME NOT NULL" +
                 ")";
         sqLiteDatabase.execSQL(createTable);
         String createAnother = "CREATE TABLE " + TASK_TABLE + " (" +
                 "USERNAME NOT NULL PRIMARY KEY," +
-                " taskName NOT NULL, " +
-                "taskStatus NOT NULL, " +
-                "taskSubmitted, " +
-                "taskCompleted, " +
-                "taskGroup" +
+                "taskName NOT NULL, " +
+                "taskDesc, " +
+                "taskHour NOT NULL, " +
+                "taskMin NOT NULL" +
                 ")";
         sqLiteDatabase.execSQL(createAnother);
     }
@@ -85,16 +84,15 @@ public class DbHelper extends SQLiteOpenHelper {
     * Purpose: Add data into the database
     * Parameters: Username, Password
     * */
-    public boolean addUser(String username, String pwd, String fn, String ln, String phn){
+    public boolean addUser(Accounts acc){
         SQLiteDatabase db = this.getWritableDatabase(); //Use this to edit the table
 
         //ContentValues is used ot create an object to put into the insert method
         ContentValues contentValues = new ContentValues();
-        contentValues.put(UTCOL2,username);
-        contentValues.put(UTCOL3, pwd);
-        contentValues.put(UTCOL4, fn);
-        contentValues.put(UTCOL5, ln);
-        contentValues.put(UTCOL6, phn);
+        contentValues.put(UTCOL2,acc.get_username());
+        contentValues.put(UTCOL3,acc.get_email());
+        contentValues.put(UTCOL4,acc.get_password());
+        contentValues.put(UTCOL5,acc.get_fullname());
 
         //Insert is a SQL Method, basically puts it into the database
         long result = db.insert(USER_TABLE, null, contentValues);
@@ -106,24 +104,55 @@ public class DbHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean verification(String username, String pwd){
+    public boolean loginverification(String username, String pwd){
         SQLiteDatabase db = this.getReadableDatabase();
-        //String Query = String.format("SELECT * FROM %s WHERE %s = \'%s\' AND %s = \'%s\'",USER_TABLE, UTCOL2, username, UTCOL3, pwd);
-        String Query = String.format("SELECT * FROM USER_TABLE");
+        String Query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\' AND PASSWORD = \'%s\'",username,pwd);
         Cursor result = db.rawQuery(Query,null);
         if(result.getCount() >= 1) {
-            while(result.moveToNext()){
-                String s = result.getString(1);
-                Log.d("Count", s);
-            }
             return true;
         }
         else {
-            Log.d("Count", String.valueOf(result.getCount()));
-            Log.d("Count", username);
-            Log.d("Count", pwd);
-
             return false;
+        }
+    }
+    public boolean registrationverification(String username){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String Query = String.format("SELECT USERNAME FROM USER_TABLE WHERE USERNAME = \'%s\'",username);
+        Cursor result = db.rawQuery(Query,null);
+        if(result.getCount() >= 1) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    public boolean addTask(String taskName, String taskDesc, String taskHour, String taskMin){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(taskName, TTCOL1);
+        cv.put(taskDesc,TTCOL2);
+        cv.put(taskHour,TTCOL3);
+        cv.put(taskMin,TTCOL4);
+
+        long result = db.insert(TASK_TABLE,null,cv);
+        if(result == -1){
+            return false;
+        }
+        else return true;
+    }
+
+    public ArrayList loadTaskList(String username){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String Query = String.format("SELECT * FROM TASK_TABLE WHERE USERNAME = \'%s\'",username);
+        ArrayList<CardsJava> eventList = new ArrayList<>();
+
+        Cursor result = db.rawQuery(Query,null);
+        while(result.moveToNext()){
+            String name = result.getString(result.getColumnIndex(TTCOL2));
+            String hour = result.getString(result.getColumnIndex(TTCOL3));
+            String min = result.getString(result.getColumnIndex(TTCOL4));
+            eventList.add(new CardsJava(name,hour,new DecimalFormat("00").format(min)));
         }
     }
 }

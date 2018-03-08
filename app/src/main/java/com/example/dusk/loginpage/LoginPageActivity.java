@@ -73,7 +73,7 @@ public class LoginPageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String un = username.getText().toString();
                 String pwd = password.getText().toString();
-                boolean valid = OrganizeMyLifeDB.verification(un,pwd);
+                boolean valid = OrganizeMyLifeDB.loginverification(un,pwd);
                 if(valid) {
                     Intent intent = new Intent(LoginPageActivity.this, MainPageActivity.class);
                     startActivity(intent);
@@ -100,9 +100,5 @@ public class LoginPageActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        OrganizeMyLifeDB.addUser("Chuck","None","Hit","Sebastian","888");
-        OrganizeMyLifeDB.addUser("Broke","Money","Brooke","Sanchez","11");
-        OrganizeMyLifeDB.addUser("","","Brooke","Sanchez","11");
-
     }
 }
