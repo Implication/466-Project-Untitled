@@ -156,5 +156,32 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         return eventList;
     }
+
+    public void updateDatabase(String un, String email, String pwd, String fullname){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String Query = "UPDATE USER_TABLE " +
+                "SET FULLNAME = \'" + fullname + "\', " +
+                "EMAIL = \'" + email + "\', " +
+                "PASSWORD = \'" + pwd + "\' " +
+                "WHERE USERNAME = '" + un + "\'";
+        db.execSQL(Query);
+    }
+
+    public ArrayList SettingsValues(String un) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String Query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\'", un);
+        Cursor result = db.rawQuery(Query, null);
+        ArrayList list = new ArrayList();
+        if (result != null) {
+            while (result.moveToNext()) {
+                list.add(result.getString((result.getColumnIndex(UTCOL5))));
+                list.add(result.getString((result.getColumnIndex(UTCOL3))));
+                list.add(result.getString((result.getColumnIndex(UTCOL4))));
+            }
+        }
+        return list;
+    }
 }
 

@@ -27,6 +27,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     private Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private DbHelper db;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         Bundle intent = getIntent().getExtras();
         if (intent != null) {
             check = intent.getString("flag");
-            if (check.equals(add)) {
+            username = intent.getString("Username");
+            if (check != null && check.equalsIgnoreCase(add)) {
                 eventList = (ArrayList<EventClass>) intent.getSerializable("eventUpdate");
                 //exampleList.add(new CardsJava(eventList.get(0).getEventTitle(), Integer.toString(eventList.size()), Integer.toString(eventList.get(0).getMin())));
                 listOld = true;
@@ -88,6 +90,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             Intent intent = new Intent(this, addEventActivity.class);
             intent.putExtra("check", check);
             intent.putExtra("events", eventList);
+            intent.putExtra("Username",username);
             startActivity(intent);
         }
         if (id == R.id.logout){
@@ -96,6 +99,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         }
         if (id == R.id.settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra("Username",username);
             startActivity(intent);
         }
 

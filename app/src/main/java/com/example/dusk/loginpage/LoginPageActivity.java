@@ -74,12 +74,22 @@ public class LoginPageActivity extends AppCompatActivity {
                 String un = username.getText().toString();
                 String pwd = password.getText().toString();
                 boolean valid = OrganizeMyLifeDB.loginverification(un,pwd);
-                if(valid) {
-                    Intent intent = new Intent(LoginPageActivity.this, MainPageActivity.class);
-                    startActivity(intent);
+                if(un.isEmpty() || pwd.isEmpty()){
+                    if(un.isEmpty()){
+                        username.setError("Username is empty");
+                    }
+                    if(pwd.isEmpty()){
+                        password.setError("Password is empty");
+                    }
                 }
-                else{
-                    Toast.makeText(getApplicationContext(),"Incorrect Login", Toast.LENGTH_SHORT).show();
+                else {
+                    if (valid) {
+                        Intent intent = new Intent(LoginPageActivity.this, MainPageActivity.class);
+                        intent.putExtra("Username", un);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Incorrect Login", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

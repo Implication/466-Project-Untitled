@@ -16,6 +16,8 @@ public class addEventActivity extends AppCompatActivity {
     public ArrayList<EventClass> eventList = new ArrayList<EventClass>();
 
     public String checkFlag;
+    private String un;
+    private String pwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class addEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         Intent intent = getIntent();
         eventList = (ArrayList<EventClass>) intent.getSerializableExtra("events");
+        un = intent.getStringExtra("Username");
     }
 
     public void addEvent (View v) {
@@ -51,6 +54,7 @@ public class addEventActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainPageActivity.class);
         intent.putExtra("flag", checkFlag);
         intent.putExtra("eventUpdate", eventList);
+        intent.putExtra("Username",un);
         startActivity(intent);
     }
 }
