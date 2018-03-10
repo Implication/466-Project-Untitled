@@ -23,7 +23,8 @@ public class LoginPageActivity extends AppCompatActivity {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PASSWORD_REGEX =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
-    //Pattern Matching Variables
+
+    //Object Variables
     DbHelper OrganizeMyLifeDB;
     EditText username;
     EditText password;
@@ -74,15 +75,28 @@ public class LoginPageActivity extends AppCompatActivity {
                 String un = username.getText().toString();
                 String pwd = password.getText().toString();
                 boolean valid = OrganizeMyLifeDB.loginverification(un,pwd);
-                if(valid) {
-                    Intent intent = new Intent(LoginPageActivity.this, MainPageActivity.class);
-                    startActivity(intent);
+                //First we check if any of the textfields are empty
+                if(un.isEmpty() || pwd.isEmpty()){
+                    if(un.isEmpty()){
+                        username.setError("Username is empty");
+                    }
+                    if(pwd.isEmpty()){
+                        password.setError("Password is empty");
+                    }
                 }
-                else{
-                    Toast.makeText(getApplicationContext(),"Incorrect Login", Toast.LENGTH_SHORT).show();
+                //We then check if what was entered by the user is in the database
+                else {
+                    if (valid) {
+                        Intent intent = new Intent(LoginPageActivity.this, MainPageActivity.class);
+                        intent.putExtra("Username", un);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Incorrect Login", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+        //We segway our activity to the registration activity
         btnRegister.setOnClickListener(new View.OnClickListener() {
             /**
              *onClick Action for Register Button,
@@ -92,7 +106,7 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginPageActivity.this, RegistrationActivity.class);
-                    startActivity(intent);
+                startActivity(intent);
             }
         });
     }

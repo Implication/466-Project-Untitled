@@ -3,10 +3,13 @@ package com.example.dusk.loginpage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -15,28 +18,43 @@ public class SettingsActivity extends AppCompatActivity {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PASSWORD_REGEX =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
+
+    private String username;
+    private EditText fullname;
+    private EditText password;
+    private EditText newpassword;
+    private EditText email;
+
+    private ArrayList<String> al;
+
+    private String dbpassword;
+
+    Button btnCancel;
+    Button btnSave;
+
+    DbHelper OrganizeMyLifeDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-    //Object Variables
-    EditText username;
-    EditText password;
-    EditText newpassword;
-    EditText email;
-
-    Button btnCancel;
-    Button btnSave;
-    DbHelper OrganizeMyLifeDB;
+        OrganizeMyLifeDB = new DbHelper(this);
 
 
-
-        username = findViewById(R.id.nameText);
+        Bundle intent = getIntent().getExtras();
+        if(intent != null) {
+            username = intent.getString("Username");
+        }
+        fullname = findViewById(R.id.nameText);
         password = findViewById(R.id.passwordText);
         newpassword = findViewById(R.id.newPasswordText);
         email = findViewById(R.id.emailText);
 
+        al = OrganizeMyLifeDB.SettingsValues(username);
+
+        fullname.setText(al.get(0));
+        email.setText(al.get(1));
 
         btnCancel = findViewById(R.id.cancelButton);
         btnSave = findViewById(R.id.saveButton);
@@ -53,14 +71,46 @@ public class SettingsActivity extends AppCompatActivity {
              */
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
+                intent.putExtra("Username", username);
+                intent.putExtra("Password",dbpassword);
                 startActivity(intent);
             }
         });
 
-        getIntent();
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+           public void onClick(View view) {
+                String em = email.getText().toString();
+                String newpwd = newpassword.getText().toString();
+                String fn = fullname.getText().toString();
+                String pwd = password.getText().toString();
+                if(em.isEmpty() || newpwd.isEmpty() || fn.isEmpty()){
+                    if(fullname.getText().toString().isEmpty()){
+                        fullname.setError("Name is empty");
+                    }
+                    if(newpassword.getText().toString().isEmpty()){
+                        newpassword.setError("New password is empty");
+                    }
+                    if(email.getText().toString().isEmpty()){
+                        email.setError("Email is empty");
+                    }
+                    if(pwd.isEmpty()){
+                        password.setError("Password is empty");
+                    }
+                }
+                else if(!OrganizeMyLifeDB.loginverification(username,pwd)){
+                    password.setError("Current password does not match");
+                    Toast.makeText(getApplicationContext(),"Current Password does not match",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
+                    intent.putExtra("Username", username);
+                    intent.putExtra("Password",dbpassword);
+                    Toast.makeText(getApplicationContext(), "Settings Saved", Toast.LENGTH_SHORT).show();
+                    OrganizeMyLifeDB.updateDatabase(username, email.getText().toString(), newpassword.getText().toString(), fullname.getText().toString());
+                    startActivity(intent);
+             }
+            }
+        });
     }
-
-
-
-
 }

@@ -28,17 +28,18 @@ import java.util.ArrayList;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    //Constant Names
+    //Constant Database Name
     private static final String DATABASE_NAME = "OrganizeMyLife.db";
-    private static final String USER_TABLE = "user_table";
 
+    //USER TABLE COLUMN NAMES
+    private static final String USER_TABLE = "user_table";
     private static final String UTCOL1 = "ID";
     private static final String UTCOL2 = "USERNAME";
     private static final String UTCOL3 = "EMAIL";
     private static final String UTCOL4 = "PASSWORD";
     private static final String UTCOL5 = "FULLNAME";
 
-
+    //TASK TABLE COLUMN NAMES
     private static final String TASK_TABLE = "TASK";
     private static final String TTCOL1 = "taskName";
     private static final String TTCOL2 = "taskDesc";
@@ -50,7 +51,7 @@ public class DbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
 
-    //OnCreate Method
+    //OnCreate Method, Create the tables
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE " + USER_TABLE + " (" +
@@ -104,6 +105,12 @@ public class DbHelper extends SQLiteOpenHelper {
             return true;
     }
 
+    /*
+    * loginverifcation method
+    * purpose: Validate the login credentials
+    * paramaters: Username, password
+    * returns false if credentials do not match in the database, otherwise returns true
+    * */
     public boolean loginverification(String username, String pwd){
         SQLiteDatabase db = this.getReadableDatabase();
         String Query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\' AND PASSWORD = \'%s\'",username,pwd);
@@ -115,6 +122,13 @@ public class DbHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+
+    /*
+    * registrationverification
+    * Purpose: Verifies a username is not in the database to use for registration
+    * paramaters: username
+    * returns false if in the  database, otherwise returns true
+    * */
     public boolean registrationverification(String username){
         SQLiteDatabase db = this.getReadableDatabase();
         String Query = String.format("SELECT USERNAME FROM USER_TABLE WHERE USERNAME = \'%s\'",username);
@@ -126,6 +140,13 @@ public class DbHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+
+    /**
+     * addTask method
+     * Purpose: Add tasks into the TASK table
+     * Paramaters: taskName, taskDesc, taskHour, taskMin
+     */
+    
     public boolean addTask(String taskName, String taskDesc, String taskHour, String taskMin){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -142,6 +163,13 @@ public class DbHelper extends SQLiteOpenHelper {
         else return true;
     }
 
+
+    /*
+    * loadTaskList
+    * purpose: Loads the tasks into the main activity page
+    * paramaters: username
+    * Returns an arraylist of all the tasks associated with a username in the task table
+    * */
     public ArrayList loadTaskList(String username){
         SQLiteDatabase db = this.getReadableDatabase();
         String Query = String.format("SELECT * FROM TASK_TABLE WHERE USERNAME = \'%s\'",username);
@@ -155,6 +183,46 @@ public class DbHelper extends SQLiteOpenHelper {
             eventList.add(new CardsJava(name,hour,new DecimalFormat("00").format(min)));
         }
         return eventList;
+    }
+
+    /*
+    * updateDatabase
+    * purpose: Updates the database based on user input in the settings activity
+    * paramaters: un, email, pwd, fullname
+    * */
+    public void updateDatabase(String un, String email, String pwd, String fullname){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String Query = "UPDATE USER_TABLE " +
+                "SET FULLNAME = \'" + fullname + "\', " +
+                "EMAIL = \'" + email + "\', " +
+                "PASSWORD = \'" + pwd + "\' " +
+                "WHERE USERNAME = '" + un + "\'";
+        db.execSQL(Query);
+    }
+
+
+    /*
+    * SettingsValues
+    * Purpose: Loads the settings activity with values in the database
+    * paramaters: un
+    * Returns an arraylist containing the fullname, email, and password associated with a username
+    * in the user table
+    * */
+    public ArrayList SettingsValues(String un) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String Query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\'", un);
+        Cursor result = db.rawQuery(Query, null);
+        ArrayList list = new ArrayList();
+        if (result != null) {
+            while (result.moveToNext()) {
+                list.add(result.getString((result.getColumnIndex(UTCOL5))));
+                list.add(result.getString((result.getColumnIndex(UTCOL3))));
+                list.add(result.getString((result.getColumnIndex(UTCOL4))));
+            }
+        }
+        return list;
     }
 }
 
