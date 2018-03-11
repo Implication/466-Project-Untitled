@@ -63,11 +63,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 ")";
         sqLiteDatabase.execSQL(createTable);
         String createAnother = "CREATE TABLE " + TASK_TABLE + " (" +
-                "USERNAME NOT NULL PRIMARY KEY," +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "USERNAME NOT NULL, " +
                 "taskName NOT NULL, " +
                 "taskDesc, " +
                 "taskHour NOT NULL, " +
-                "taskMin NOT NULL" +
+                "taskMin NOT NULL, " +
+                "FOREIGN KEY(USERNAME) REFERENCES user_table(USERNAME)" +
                 ")";
         sqLiteDatabase.execSQL(createAnother);
     }
@@ -147,14 +149,15 @@ public class DbHelper extends SQLiteOpenHelper {
      * Paramaters: taskName, taskDesc, taskHour, taskMin
      */
     
-    public boolean addTask(String taskName, String taskDesc, String taskHour, String taskMin){
+    public boolean addTask(String username,String taskName, String taskDesc, String taskHour, String taskMin){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(taskName, TTCOL1);
-        cv.put(taskDesc,TTCOL2);
-        cv.put(taskHour,TTCOL3);
-        cv.put(taskMin,TTCOL4);
+        cv.put(UTCOL2, username);
+        cv.put(TTCOL1,taskName);
+        cv.put(TTCOL2,taskDesc);
+        cv.put(TTCOL3,taskHour);
+        cv.put(TTCOL4,taskMin);
 
         long result = db.insert(TASK_TABLE,null,cv);
         if(result == -1){
@@ -166,23 +169,25 @@ public class DbHelper extends SQLiteOpenHelper {
 
     /*
     * loadTaskList
-    * purpose: Loads the tasks into the main activity page
+    * purpose: Loads the tasks into the main activity
     * paramaters: username
     * Returns an arraylist of all the tasks associated with a username in the task table
     * */
     public ArrayList loadTaskList(String username){
         SQLiteDatabase db = this.getReadableDatabase();
-        String Query = String.format("SELECT * FROM TASK_TABLE WHERE USERNAME = \'%s\'",username);
+        String Query = String.format("SELECT * FROM TASK WHERE USERNAME = \'%s\'",username);
         ArrayList<CardsJava> eventList = new ArrayList<>();
 
         Cursor result = db.rawQuery(Query,null);
-        while(result.moveToNext()){
-            String name = result.getString(result.getColumnIndex(TTCOL2));
-            String hour = result.getString(result.getColumnIndex(TTCOL3));
-            String min = result.getString(result.getColumnIndex(TTCOL4));
-            eventList.add(new CardsJava(name,hour,new DecimalFormat("00").format(min)));
+        if(result != null) {
+            while (result.moveToNext()) {
+                String name = result.getString(result.getColumnIndex(TTCOL1));
+                String hour = result.getString(result.getColumnIndex(TTCOL3));
+                String min = result.getString(result.getColumnIndex(TTCOL4));
+                eventList.add(new CardsJava(name, hour, new DecimalFormat("00").format(Integer.parseInt(min))));
+            }
         }
-        return eventList;
+            return eventList;
     }
 
     /*

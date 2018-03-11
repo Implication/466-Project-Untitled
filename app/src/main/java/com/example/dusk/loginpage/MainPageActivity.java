@@ -20,7 +20,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     public ArrayList<EventClass> eventList = new ArrayList<EventClass>();
     public String check = "";
     public String add = "addEvent";
-    private ArrayList<CardsJava> exampleList = new ArrayList<>();
+    private ArrayList<CardsJava> taskList = new ArrayList<>();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private RecyclerView mRecyclerView;
@@ -34,32 +34,16 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         db = new DbHelper(this);
         setContentView(R.layout.activity_main_page);
+        //We load our username from the login page throughout the app's lifecycle
         Bundle intent = getIntent().getExtras();
         if (intent != null) {
-            check = intent.getString("flag");
             username = intent.getString("Username");
-            if (check != null && check.equalsIgnoreCase(add)) {
-                eventList = (ArrayList<EventClass>) intent.getSerializable("eventUpdate");
-                //exampleList.add(new CardsJava(eventList.get(0).getEventTitle(), Integer.toString(eventList.size()), Integer.toString(eventList.get(0).getMin())));
-                listOld = true;
-            }
-            else {
-                exampleList.add(new CardsJava("No Tasks", "", ""));
-                listOld = false;
-            }
         }
-
-        if (listOld) {
-            for (int i = 0; i < eventList.size(); i++)
-            {
-                //exampleList = db.loadTaskList(intent.getString("username"));
-                String titleTemp = eventList.get(i).getEventTitle();
-                int hourTemp = eventList.get(i).getHour();
-                int minTemp = eventList.get(i).getMin();
-                exampleList.add(new CardsJava(titleTemp, Integer.toString(hourTemp), new DecimalFormat("00").format(minTemp)));
-            }
+        //We get the assoicated tasklist by a username
+        taskList = db.loadTaskList(username);
+        if(taskList.size() == 0) {
+            taskList.add(new CardsJava("No Tasks", "", ""));
         }
-
         buildRecyclerView();
 
         mDrawerLayout = findViewById(R.id.drawerLayout);
@@ -112,7 +96,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new Adapter(exampleList);
+        mAdapter = new Adapter(taskList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
