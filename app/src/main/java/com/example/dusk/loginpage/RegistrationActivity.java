@@ -37,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
         fullname_input = findViewById(R.id.fullname_input);
         Submit = findViewById(R.id.Submit);
         Reset = findViewById(R.id.Reset);
-
+        //We want to submit the changes we made to registration page to the database
         Submit.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View v) {
@@ -46,6 +46,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                           String email = email_input.getText().toString();
                                           String pwd = password_input.getText().toString();
                                           String fullname = fullname_input.getText().toString();
+                                          //We check to see if any of the settigns are empty
                                           if (un.isEmpty() || email.isEmpty() || pwd.isEmpty() || fullname.isEmpty()) {
                                               if (un.isEmpty()) {
                                                   username_input.setError("Please enter username");
@@ -61,6 +62,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                               }
                                           }
                                           else {
+                                              //We check to see if the user is in the system
                                                   if (db.registrationverification(un)) {
                                                       Accounts acc = new Accounts(un, pwd, email, fullname);
                                                       db.addUser(acc);

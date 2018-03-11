@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Untitled Calandar App</string>
+    <string name="app_name">Task Tracker</string>
     <string name="Login">Login</string>
     <string name="Register">Register</string>
     <string name="Registration">Registration</string>

@@ -29,11 +29,11 @@ public class EventList implements Serializable {
         return eventList.get(i).getDesc();
     }
 
-    public int getIndexHour(int i) {
+    public String getIndexHour(int i) {
         return eventList.get(i).getHour();
     }
 
-    public int getIndexMin(int i) {
+    public String getIndexMin(int i) {
         return eventList.get(i).getMin();
     }
 }

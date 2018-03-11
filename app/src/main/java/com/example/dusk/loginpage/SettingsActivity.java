@@ -27,7 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private ArrayList<String> al;
 
-    private String dbpassword;
 
     Button btnCancel;
     Button btnSave;
@@ -59,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.cancelButton);
         btnSave = findViewById(R.id.saveButton);
 
-
+        //We want to cancel any settings changes
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             /**
@@ -72,11 +71,10 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
                 intent.putExtra("Username", username);
-                intent.putExtra("Password",dbpassword);
                 startActivity(intent);
             }
         });
-
+        //We want to save the changes we made on the settings page
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
@@ -84,6 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
                 String newpwd = newpassword.getText().toString();
                 String fn = fullname.getText().toString();
                 String pwd = password.getText().toString();
+                //We check if any of the fields are empty
                 if(em.isEmpty() || newpwd.isEmpty() || fn.isEmpty()){
                     if(fullname.getText().toString().isEmpty()){
                         fullname.setError("Name is empty");
@@ -98,14 +97,15 @@ public class SettingsActivity extends AppCompatActivity {
                         password.setError("Password is empty");
                     }
                 }
+                //We also check if teh password matches the current password
                 else if(!OrganizeMyLifeDB.loginverification(username,pwd)){
                     password.setError("Current password does not match");
                     Toast.makeText(getApplicationContext(),"Current Password does not match",Toast.LENGTH_SHORT).show();
                 }
+                //After all checks we place it back into our database
                 else{
                     Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
                     intent.putExtra("Username", username);
-                    intent.putExtra("Password",dbpassword);
                     Toast.makeText(getApplicationContext(), "Settings Saved", Toast.LENGTH_SHORT).show();
                     OrganizeMyLifeDB.updateDatabase(username, email.getText().toString(), newpassword.getText().toString(), fullname.getText().toString());
                     startActivity(intent);

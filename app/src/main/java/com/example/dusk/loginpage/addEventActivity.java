@@ -18,6 +18,7 @@ public class addEventActivity extends AppCompatActivity {
     public String checkFlag;
     private String un;
     private String pwd;
+    private DbHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,33 +30,41 @@ public class addEventActivity extends AppCompatActivity {
     }
 
     public void addEvent (View v) {
+        db = new DbHelper(this);
         EditText title = findViewById(R.id.title);
-        event.setEventTitle(title.getText().toString());
+        String t = title.getText().toString();
 
         EditText desc = findViewById(R.id.description);
-        event.setDesc(desc.getText().toString());
+        String d = desc.getText().toString();
 
         EditText hourText = findViewById(R.id.hour);
         String hourString = hourText.getText().toString();
-        int hourInt = Integer.parseInt(hourString);
-        event.setHour(hourInt);
 
         EditText minText = findViewById(R.id.minute);
         String minString = minText.getText().toString();
-        int minInt = Integer.parseInt(minString);
-        event.setMinute(minInt);
+        if(t.isEmpty() || hourString.isEmpty() || minString.isEmpty()){
+            if(t.isEmpty()){
+                title.setError("Please enter a title");
+            }
+            if(hourString.isEmpty()){
+                hourText.setError("Please enter the hour string");
+            }
+            if(minString.isEmpty()){
+                minText.setError("Please enter the minutes");
+            }
+        }
+        else {
+            db.addTask(un, t, d, hourString, minString);
+            checkFlag = "addEvent";
 
-        eventList.add(event);
+            Toast.makeText(getApplicationContext(), "Event Added", Toast.LENGTH_SHORT);
 
-        checkFlag = "addEvent";
-
-        Toast.makeText(getApplicationContext(), "Event Added", Toast.LENGTH_SHORT);
-
-        Intent intent = new Intent(this, MainPageActivity.class);
-        intent.putExtra("flag", checkFlag);
-        intent.putExtra("eventUpdate", eventList);
-        intent.putExtra("Username",un);
-        startActivity(intent);
+            Intent intent = new Intent(this, MainPageActivity.class);
+            intent.putExtra("flag", checkFlag);
+            intent.putExtra("eventUpdate", eventList);
+            intent.putExtra("Username", un);
+            startActivity(intent);
+        }
     }
 }
 

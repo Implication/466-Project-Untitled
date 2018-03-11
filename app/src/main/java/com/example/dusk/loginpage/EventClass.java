@@ -10,15 +10,15 @@ public class EventClass implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public int hour;
-    public int minute;
+    public String hour;
+    public String minute;
     public String eventTitle;
     public String desc;
     public String from;
 
     public EventClass () { }
 
-    public EventClass (int h, int m, String e, String d, String f) {
+    public EventClass (String h, String m, String e, String d, String f) {
         hour = h;
         minute = m;
         eventTitle = e;
@@ -26,10 +26,10 @@ public class EventClass implements Serializable {
         from = f;
     }
 
-    public void setHour(int h) {
+    public void setHour(String h) {
         hour = h;
     }
-    public void setMinute(int m) {
+    public void setMinute(String m) {
         minute = m;
     }
     public void setEventTitle(String e) {
@@ -42,8 +42,8 @@ public class EventClass implements Serializable {
 
     public String getEventTitle () { return eventTitle; }
     public String getDesc () { return desc; }
-    public int getHour () { return hour; }
-    public int getMin () { return minute; }
+    public String getHour () { return hour; }
+    public String getMin () { return minute; }
     public String getFrom () { return from; }
 
 
