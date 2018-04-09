@@ -1,9 +1,12 @@
 package com.example.dusk.loginpage;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,25 +18,75 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private ArrayList<CardsJava> mList;
     private OnItemClickListener mListener;
+    private DbHelper db;
+    private String username;
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
+    public Adapter(ArrayList<CardsJava> cards) {
+        mList = cards;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards, parent, false);
+        ViewHolder vh = new ViewHolder(v, mListener);
+        return vh;
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final CardsJava currentCard = mList.get(position);
+        db = new DbHelper(holder.mContext);
+        holder.mTextOne.setText(currentCard.getTitleText());
+        holder.mTextTwo.setText((currentCard.getMHour()));
+        holder.mTextThree.setText((currentCard.getMMinute()));
+        holder.deleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String t = currentCard.getTitleText();
+                final String h = currentCard.getMHour();
+                final String m = currentCard.getMMinute();
+                StaticUsername staticUsername = new StaticUsername();
+                String un = StaticUsername.username;
+                db.deleteTask(un, t, h, m);
+                Intent intent = new Intent(holder.mContext, MainPageActivity.class);
+                holder.mContext.startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+
+        return mList.size();
+    }
+
+    public void deleteEvent(View deleteEventButton) {
+
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextOne;
         public TextView mTextTwo;
         public TextView mTextThree;
+        private Button deleteEvent;
+        private Context mContext;
 
         public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
+            mContext = itemView.getContext();
             mTextOne = itemView.findViewById(R.id.titleText);
             mTextTwo = itemView.findViewById(R.id.hourText);
             mTextThree = itemView.findViewById(R.id.minuteText);
+            deleteEvent = itemView.findViewById(R.id.deleteEventButton);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -47,30 +100,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 }
             });
         }
-    }
-
-    public Adapter(ArrayList<CardsJava> cards) {
-        mList = cards;
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards, parent, false);
-        ViewHolder vh = new ViewHolder(v, mListener);
-        return vh;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        CardsJava currentCard = mList.get(position);
-        holder.mTextOne.setText(currentCard.getTitleText());
-        holder.mTextTwo.setText((currentCard.getMHour()));
-        holder.mTextThree.setText((currentCard.getMMinute()));
-    }
-
-    @Override
-    public int getItemCount() {
-
-        return mList.size();
     }
 }

@@ -88,7 +88,8 @@ public class LoginPageActivity extends AppCompatActivity {
                 else {
                     if (valid) {
                         Intent intent = new Intent(LoginPageActivity.this, MainPageActivity.class);
-                        intent.putExtra("Username", un);
+                        StaticUsername StUserName = new StaticUsername();
+                        StaticUsername.username = un;
                         startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), "Incorrect Login", Toast.LENGTH_SHORT).show();

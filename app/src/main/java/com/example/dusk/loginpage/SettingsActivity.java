@@ -18,20 +18,15 @@ public class SettingsActivity extends AppCompatActivity {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PASSWORD_REGEX =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
-
+    Button btnCancel;
+    Button btnSave;
+    DbHelper OrganizeMyLifeDB;
     private String username;
     private EditText fullname;
     private EditText password;
     private EditText newpassword;
     private EditText email;
-
     private ArrayList<String> al;
-
-
-    Button btnCancel;
-    Button btnSave;
-
-    DbHelper OrganizeMyLifeDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +37,8 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         Bundle intent = getIntent().getExtras();
-        if(intent != null) {
-            username = intent.getString("Username");
-        }
+        StaticUsername un = new StaticUsername();
+        username = StaticUsername.username;
         fullname = findViewById(R.id.nameText);
         password = findViewById(R.id.passwordText);
         newpassword = findViewById(R.id.newPasswordText);
@@ -70,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
              */
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
-                intent.putExtra("Username", username);
                 startActivity(intent);
             }
         });
@@ -105,7 +98,6 @@ public class SettingsActivity extends AppCompatActivity {
                 //After all checks we place it back into our database
                 else{
                     Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
-                    intent.putExtra("Username", username);
                     Toast.makeText(getApplicationContext(), "Settings Saved", Toast.LENGTH_SHORT).show();
                     OrganizeMyLifeDB.updateDatabase(username, email.getText().toString(), newpassword.getText().toString(), fullname.getText().toString());
                     startActivity(intent);

@@ -66,5 +66,7 @@ public class addEventActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
 }
+
 

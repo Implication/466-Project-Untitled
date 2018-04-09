@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,9 +39,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_main_page);
         //We load our username from the login page throughout the app's lifecycle
         Bundle intent = getIntent().getExtras();
-        if (intent != null) {
-            username = intent.getString("Username");
-        }
+        StaticUsername un = new StaticUsername();
+        username = StaticUsername.username;
         //We get the assoicated tasklist by a username
         taskList = db.loadTaskList(username);
         if(taskList.size() == 0) {
@@ -100,4 +102,6 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
+
+
 }

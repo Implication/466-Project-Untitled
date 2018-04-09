@@ -101,10 +101,7 @@ public class DbHelper extends SQLiteOpenHelper {
         long result = db.insert(USER_TABLE, null, contentValues);
 
         //This Checks To See if the data was added correctly
-        if(result == -1)
-            return false;
-        else
-            return true;
+        return result != -1;
     }
 
     /*
@@ -117,12 +114,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String Query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\' AND PASSWORD = \'%s\'",username,pwd);
         Cursor result = db.rawQuery(Query,null);
-        if(result.getCount() >= 1) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return result.getCount() >= 1;
     }
 
     /*
@@ -135,12 +127,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String Query = String.format("SELECT USERNAME FROM USER_TABLE WHERE USERNAME = \'%s\'",username);
         Cursor result = db.rawQuery(Query,null);
-        if(result.getCount() >= 1) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return result.getCount() < 1;
     }
 
     /**
@@ -160,10 +147,7 @@ public class DbHelper extends SQLiteOpenHelper {
         cv.put(TTCOL4,taskMin);
 
         long result = db.insert(TASK_TABLE,null,cv);
-        if(result == -1){
-            return false;
-        }
-        else return true;
+        return result != -1;
     }
 
 
@@ -228,6 +212,11 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         }
         return list;
+    }
+
+    public boolean deleteTask(String username, String taskName, String taskHour, String taskMin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(DATABASE_NAME, TTCOL1 + "=" + taskName, null) > 0;
     }
 }
 
