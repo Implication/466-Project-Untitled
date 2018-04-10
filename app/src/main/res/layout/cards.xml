@@ -56,6 +56,12 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:text="Delete" />
+        <Button
+            android:id="@+id/modifyEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/deleteEventButton"
+            android:text="Edit" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

@@ -217,7 +217,5 @@ public class DbHelper extends SQLiteOpenHelper {
     public void deleteTask(String username, String taskName, String taskHour, String taskMin) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from "+TASK_TABLE+" where taskName='"+taskName+"'");
-
-
     }
 }

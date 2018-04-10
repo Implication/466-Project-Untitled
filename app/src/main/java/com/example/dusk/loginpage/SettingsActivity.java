@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -93,12 +95,12 @@ public class SettingsActivity extends AppCompatActivity {
                 //We also check if teh password matches the current password
                 else if(!OrganizeMyLifeDB.loginverification(username,pwd)){
                     password.setError("Current password does not match");
-                    Toast.makeText(getApplicationContext(),"Current Password does not match",Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(getApplicationContext(), "Current password does not match", R.style.toastTheme).show();
                 }
                 //After all checks we place it back into our database
                 else{
                     Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
-                    Toast.makeText(getApplicationContext(), "Settings Saved", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(getApplicationContext(), "Settings Saved", R.style.toastTheme).show();
                     OrganizeMyLifeDB.updateDatabase(username, email.getText().toString(), newpassword.getText().toString(), fullname.getText().toString());
                     startActivity(intent);
              }

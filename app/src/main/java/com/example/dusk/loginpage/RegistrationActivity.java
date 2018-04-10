@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
+
 import java.util.ArrayList;
 
 /*
@@ -66,13 +68,13 @@ public class RegistrationActivity extends AppCompatActivity {
                                                   if (db.registrationverification(un)) {
                                                       Accounts acc = new Accounts(un, pwd, email, fullname);
                                                       db.addUser(acc);
-                                                      Toast.makeText(getApplicationContext(), "Your Account has been created", Toast.LENGTH_SHORT).show();
+                                                      StyleableToast.makeText(getApplicationContext(), "Your account has been created", R.style.toastTheme).show();
                                                       Intent intent = new Intent(RegistrationActivity.this, LoginPageActivity.class);
                                                       startActivity(intent);
                                                   } else {
 
                                                       username_input.setError("Username Already Taken");
-                                                      Toast.makeText(getApplicationContext(), "Error, Username Already Exists", Toast.LENGTH_SHORT).show();
+                                                      StyleableToast.makeText(getApplicationContext(), "Error: Username already exists", R.style.toastTheme).show();
                                                   }
                                               }
                                           }

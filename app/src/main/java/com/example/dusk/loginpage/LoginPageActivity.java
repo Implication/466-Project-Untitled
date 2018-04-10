@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,7 +94,7 @@ public class LoginPageActivity extends AppCompatActivity {
                         StaticUsername.username = un;
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Incorrect Login", Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(getApplicationContext(), "Invalid Login", R.style.toastTheme).show();
                     }
                 }
             }

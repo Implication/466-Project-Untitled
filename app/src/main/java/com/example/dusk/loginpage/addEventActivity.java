@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
+
 import java.util.ArrayList;
 
 
@@ -57,7 +59,7 @@ public class addEventActivity extends AppCompatActivity {
             db.addTask(un, t, d, hourString, minString);
             checkFlag = "addEvent";
 
-            Toast.makeText(getApplicationContext(), "Event Added", Toast.LENGTH_SHORT);
+            StyleableToast.makeText(this, "Event Added", R.style.toastTheme).show();
 
             Intent intent = new Intent(this, MainPageActivity.class);
             intent.putExtra("flag", checkFlag);

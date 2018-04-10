@@ -25,4 +25,5 @@ public class CardsJava {
     public String getMMinute () {
         return mMinute;
     }
+
 }
