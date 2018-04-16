@@ -218,4 +218,40 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from "+TASK_TABLE+" where taskName='"+taskName+"'");
     }
+
+    public String getEventInfo(String username, String title) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String Query = "SELECT "+TTCOL2+" FROM "+TASK_TABLE+" WHERE taskName='"+title+"' AND USERNAME = '"+username+"'";
+        Cursor result = db.rawQuery(Query, null);
+        if(result.getCount() >= 1){
+            result.moveToFirst();
+            String desc = result.getString((result.getColumnIndex(TTCOL2)));
+            return desc;
+        }
+        else {
+            return "No Description";
+        }
+    }
+
+    public void modifyEvent(String oldTitle, String taskName, String taskDesc, String taskHour, String taskMin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL2+"="+taskDesc+" WHERE "+TTCOL1+" = "+oldTitle);
+        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL3+"="+taskHour+" WHERE "+TTCOL1+" = "+oldTitle);
+        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL4+"="+taskMin+" WHERE "+TTCOL1+" = "+oldTitle);
+        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL1+"="+taskName+" WHERE "+TTCOL1+" = "+oldTitle);
+    }
+
+    public String forgotPasswordSearch(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String Query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\'", username);
+        Cursor result = db.rawQuery(Query, null);
+        if (result.getCount() >= 1) {
+            result.moveToFirst();
+            String password = "Your password is: " + result.getString(result.getColumnIndex("PASSWORD"));
+            return password;
+        }
+        else {
+            return null;
+        }
+    }
 }

@@ -3,12 +3,12 @@ package com.example.dusk.loginpage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +30,7 @@ public class LoginPageActivity extends AppCompatActivity {
     DbHelper OrganizeMyLifeDB;
     EditText username;
     EditText password;
+    TextView forgotPassword;
     Button btnLogin;
     Button btnRegister;
 
@@ -50,6 +51,14 @@ public class LoginPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+        forgotPassword = findViewById(R.id.forgotPasswordText);
+        forgotPassword.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(LoginPageActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         OrganizeMyLifeDB = new DbHelper(this);
 
@@ -94,7 +103,7 @@ public class LoginPageActivity extends AppCompatActivity {
                         StaticUsername.username = un;
                         startActivity(intent);
                     } else {
-                        StyleableToast.makeText(getApplicationContext(), "Invalid Login", R.style.toastTheme).show();
+                        Toast.makeText(getApplicationContext(), "Incorrect Login", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

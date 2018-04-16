@@ -29,12 +29,13 @@
         <activity
             android:name=".SettingsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".addEventActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ModifyEvent"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".ModifyEvent" />
+        <activity android:name=".ForgotPasswordActivity"></activity>
     </application>
 
 </manifest>

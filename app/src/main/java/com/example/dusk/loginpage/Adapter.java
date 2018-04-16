@@ -56,18 +56,29 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 holder.mContext.startActivity(intent);
             }
         });
+        holder.modifyEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StaticUsername staticUsername = new StaticUsername();
+                String un = StaticUsername.username;
+                Intent intent = new Intent(holder.mContext, ModifyEvent.class);
+                intent.putExtra(un, "username");
+                intent.putExtra(currentCard.getTitleText(), "title");
+                intent.putExtra(currentCard.getMHour(), "hour");
+                intent.putExtra(currentCard.getMMinute(), "minute");
+                holder.mContext.startActivity(intent);
+            }
+        });
     }
     
-
     @Override
     public int getItemCount() {
 
         return mList.size();
     }
 
-    public void deleteEvent(View deleteEventButton) {
 
-    }
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -78,6 +89,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public TextView mTextTwo;
         public TextView mTextThree;
         private Button deleteEvent;
+        private Button modifyEvent;
         private Context mContext;
 
         public ViewHolder(View itemView, final OnItemClickListener listener) {
@@ -87,6 +99,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             mTextTwo = itemView.findViewById(R.id.hourText);
             mTextThree = itemView.findViewById(R.id.minuteText);
             deleteEvent = itemView.findViewById(R.id.deleteEventButton);
+            modifyEvent = itemView.findViewById(R.id.modifyEventButton);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
