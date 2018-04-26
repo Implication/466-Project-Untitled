@@ -30,9 +30,10 @@ public class LoginPageActivity extends AppCompatActivity {
     DbHelper OrganizeMyLifeDB;
     EditText username;
     EditText password;
-    TextView forgotPassword;
+    Button forgotPassword;
     Button btnLogin;
     Button btnRegister;
+
 
     /**
      * Validates the @code username and @code password texts entered by the user
@@ -51,7 +52,7 @@ public class LoginPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
-        forgotPassword = findViewById(R.id.forgotPasswordText);
+        forgotPassword = findViewById(R.id.forgotPasswordButton);
         forgotPassword.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

@@ -49,7 +49,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                           String pwd = password_input.getText().toString();
                                           String fullname = fullname_input.getText().toString();
                                           //We check to see if any of the settigns are empty
-                                          if (un.isEmpty() || email.isEmpty() || pwd.isEmpty() || fullname.isEmpty()) {
+                                          if (un.isEmpty() || email.isEmpty() || pwd.isEmpty() || fullname.isEmpty() || pwd.length() < 8) {
                                               if (un.isEmpty()) {
                                                   username_input.setError("Please enter username");
                                               }
@@ -61,6 +61,9 @@ public class RegistrationActivity extends AppCompatActivity {
                                               }
                                               if (fullname.isEmpty()) {
                                                   fullname_input.setError("Please enter Fullname");
+                                              }
+                                              if (pwd.length() < 8) {
+                                                  password_input.setError("Password must be at least 8 characters");
                                               }
                                           }
                                           else {

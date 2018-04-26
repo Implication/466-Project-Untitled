@@ -247,8 +247,22 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor result = db.rawQuery(Query, null);
         if (result.getCount() >= 1) {
             result.moveToFirst();
-            String password = "Your password is: " + result.getString(result.getColumnIndex("PASSWORD"));
+            String password = result.getString(result.getColumnIndex("PASSWORD"));
             return password;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public String getUserEmail(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\'", username);
+        Cursor result = db.rawQuery(query, null);
+        if (result.getCount() >= 1) {
+                result.moveToFirst();
+                String email = result.getString(result.getColumnIndex("EMAIL"));
+                return email;
         }
         else {
             return null;

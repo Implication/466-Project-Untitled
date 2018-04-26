@@ -45,21 +45,27 @@
                 android:layout_weight="1"
                 android:text="@string/Login" />
 
-            <Button
-                android:id="@+id/buttonRegister"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/Register" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/forgotPasswordText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Forgot My Password"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <Button
+                 android:id="@+id/buttonRegister"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:text="Register" />
+            <Button
+                android:id="@+id/forgotPasswordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Forgot PW" />
+        </LinearLayout>
 
 
     </LinearLayout>
