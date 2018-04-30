@@ -21,10 +21,6 @@ import java.util.regex.Pattern;
 * */
 
 public class LoginPageActivity extends AppCompatActivity {
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    public static final Pattern VALID_PASSWORD_REGEX =
-            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
 
     //Object Variables
     DbHelper OrganizeMyLifeDB;
@@ -35,18 +31,6 @@ public class LoginPageActivity extends AppCompatActivity {
     Button btnRegister;
 
 
-    /**
-     * Validates the @code username and @code password texts entered by the user
-     * **Note**, for Login Page this will need to be edited to match case by SQL Database.
-     *
-     * @param emailStr is the email that the user inputed into the UserID textbox
-     * @param pwdStr   is the password string that the user inputed into the Password textbox.
-     */
-    public static boolean validate(String emailStr, String pwdStr) {
-        Matcher emailMatch = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-        Matcher pwdMatch = VALID_PASSWORD_REGEX.matcher(pwdStr);
-        return emailMatch.find() && pwdMatch.find();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

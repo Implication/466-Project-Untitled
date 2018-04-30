@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -19,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PASSWORD_REGEX =
-            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!\\Q\\?[]{}.\\E#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
     Button btnCancel;
     Button btnSave;
     DbHelper OrganizeMyLifeDB;
@@ -73,24 +74,31 @@ public class SettingsActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
-                String em = email.getText().toString();
                 String newpwd = newpassword.getText().toString();
                 String fn = fullname.getText().toString();
                 String pwd = password.getText().toString();
+                Matcher e = VALID_EMAIL_ADDRESS_REGEX.matcher(email.getText().toString());
+                Matcher p = VALID_PASSWORD_REGEX.matcher(pwd);
+                Matcher np = VALID_PASSWORD_REGEX.matcher(newpwd);
+                String el = Boolean.toString(e.find());
+                Log.d("duo", el);
                 //We check if any of the fields are empty
-                if(em.isEmpty() || newpwd.isEmpty() || fn.isEmpty()){
+                if (fn.isEmpty() || el != "true" || !p.find() || !np.find()) {
                     if(fullname.getText().toString().isEmpty()){
                         fullname.setError("Name is empty");
                     }
-                    if(newpassword.getText().toString().isEmpty()){
-                        newpassword.setError("New password is empty");
+                    if (!np.find()) {
+                        newpassword.setError("Password must have 1 uppercase and lowercase letter, a number, and a special character");
                     }
-                    if(email.getText().toString().isEmpty()){
-                        email.setError("Email is empty");
+                    if (el != "true") {
+                        email.setError("Enter a valid email address");
                     }
-                    if(pwd.isEmpty()){
-                        password.setError("Password is empty");
+
+                    if (!p.find()) {
+                        password.setError("Password must have 1 uppercase and lowercase letter, a number, and a special character");
                     }
+
+
                 }
                 //We also check if teh password matches the current password
                 else if(!OrganizeMyLifeDB.loginverification(username,pwd)){
