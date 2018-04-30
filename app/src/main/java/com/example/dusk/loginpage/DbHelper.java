@@ -235,10 +235,18 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void modifyEvent(String oldTitle, String taskName, String taskDesc, String taskHour, String taskMin) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL2+"="+taskDesc+" WHERE "+TTCOL1+" = "+oldTitle);
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL3+"="+taskHour+" WHERE "+TTCOL1+" = "+oldTitle);
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL4+"="+taskMin+" WHERE "+TTCOL1+" = "+oldTitle);
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL1+"="+taskName+" WHERE "+TTCOL1+" = "+oldTitle);
+
+        if (Integer.parseInt(taskMin) < 10) {
+            taskMin = "0" + taskMin;
+        }
+
+        String Query = "UPDATE TASK " +
+                "SET taskName = \'" + taskName + "\', " +
+                "taskDesc = \'" + taskDesc + "\', " +
+                "taskHour = \'" + taskHour + "\', " +
+                "taskMin = \'" + taskMin + "\' " +
+                "WHERE taskName = '" + oldTitle + "\'";
+        db.execSQL(Query);
     }
 
     public String forgotPasswordSearch(String username) {

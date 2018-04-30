@@ -62,10 +62,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 StaticUsername staticUsername = new StaticUsername();
                 String un = StaticUsername.username;
                 Intent intent = new Intent(holder.mContext, ModifyEvent.class);
-                intent.putExtra(un, "username");
-                intent.putExtra(currentCard.getTitleText(), "title");
-                intent.putExtra(currentCard.getMHour(), "hour");
-                intent.putExtra(currentCard.getMMinute(), "minute");
+                intent.putExtra("username", un);
+                intent.putExtra("title", currentCard.getTitleText());
+                intent.putExtra("hour", currentCard.getMHour());
+                intent.putExtra("minute", currentCard.getMMinute());
                 holder.mContext.startActivity(intent);
             }
         });
