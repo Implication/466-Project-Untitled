@@ -3,6 +3,7 @@ package com.example.dusk.loginpage;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +20,12 @@ public class ModifyEvent extends AppCompatActivity {
         //Get info from selected card (title, hour, minute, description
         String title = intent.getStringExtra("title");
         oldTitle = title;
+        Log.i("Title", oldTitle);
         String hour = intent.getStringExtra("hour");
         String minute = intent.getStringExtra("minute");
         String username = intent.getStringExtra("username");
         String desc = db.getEventInfo(username, title);
+        Log.i("DESC", desc);
 
         //Set edit text views to the current card info
         EditText titleText = findViewById(R.id.titleMod);

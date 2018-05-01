@@ -135,7 +135,7 @@ public class DbHelper extends SQLiteOpenHelper {
      * Purpose: Add tasks into the TASK table
      * Paramaters: taskName, taskDesc, taskHour, taskMin
      */
-    
+
     public boolean addTask(String username,String taskName, String taskDesc, String taskHour, String taskMin){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -171,7 +171,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 eventList.add(new CardsJava(name, hour, new DecimalFormat("00").format(Integer.parseInt(min))));
             }
         }
-            return eventList;
+        return eventList;
     }
 
     /*
@@ -235,10 +235,18 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void modifyEvent(String oldTitle, String taskName, String taskDesc, String taskHour, String taskMin) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL2+"="+taskDesc+" WHERE "+TTCOL1+" = "+oldTitle);
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL3+"="+taskHour+" WHERE "+TTCOL1+" = "+oldTitle);
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL4+"="+taskMin+" WHERE "+TTCOL1+" = "+oldTitle);
-        db.execSQL("UPDATE TABLE "+TASK_TABLE+" MODIFY "+TTCOL1+"="+taskName+" WHERE "+TTCOL1+" = "+oldTitle);
+
+        if (Integer.parseInt(taskMin) < 10) {
+            taskMin = "0" + taskMin;
+        }
+
+        String Query = "UPDATE TASK " +
+                "SET taskName = \'" + taskName + "\', " +
+                "taskDesc = \'" + taskDesc + "\', " +
+                "taskHour = \'" + taskHour + "\', " +
+                "taskMin = \'" + taskMin + "\' " +
+                "WHERE taskName = '" + oldTitle + "\'";
+        db.execSQL(Query);
     }
 
     public String forgotPasswordSearch(String username) {
@@ -260,9 +268,9 @@ public class DbHelper extends SQLiteOpenHelper {
         String query = String.format("SELECT * FROM USER_TABLE WHERE USERNAME = \'%s\'", username);
         Cursor result = db.rawQuery(query, null);
         if (result.getCount() >= 1) {
-                result.moveToFirst();
-                String email = result.getString(result.getColumnIndex("EMAIL"));
-                return email;
+            result.moveToFirst();
+            String email = result.getString(result.getColumnIndex("EMAIL"));
+            return email;
         }
         else {
             return null;

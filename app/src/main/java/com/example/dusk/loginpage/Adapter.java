@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,6 +44,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.mTextOne.setText(currentCard.getTitleText());
         holder.mTextTwo.setText((currentCard.getMHour()));
         holder.mTextThree.setText((currentCard.getMMinute()));
+        holder.optionsToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.modifyEvent.getVisibility() == View.INVISIBLE)
+                {
+                    holder.deleteEvent.setVisibility(View.VISIBLE);
+                    holder.modifyEvent.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.deleteEvent.setVisibility(View.INVISIBLE);
+                    holder.modifyEvent.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
         holder.deleteEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,15 +77,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 StaticUsername staticUsername = new StaticUsername();
                 String un = StaticUsername.username;
                 Intent intent = new Intent(holder.mContext, ModifyEvent.class);
-                intent.putExtra(un, "username");
-                intent.putExtra(currentCard.getTitleText(), "title");
-                intent.putExtra(currentCard.getMHour(), "hour");
-                intent.putExtra(currentCard.getMMinute(), "minute");
+                intent.putExtra("username", un);
+                intent.putExtra("title", currentCard.getTitleText());
+                intent.putExtra("hour", currentCard.getMHour());
+                intent.putExtra("minute", currentCard.getMMinute());
                 holder.mContext.startActivity(intent);
             }
         });
     }
-    
+
     @Override
     public int getItemCount() {
 
@@ -88,8 +103,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public TextView mTextOne;
         public TextView mTextTwo;
         public TextView mTextThree;
-        private Button deleteEvent;
-        private Button modifyEvent;
+        public Button deleteEvent;
+        public Button modifyEvent;
+        public ImageButton optionsToggle;
         private Context mContext;
 
         public ViewHolder(View itemView, final OnItemClickListener listener) {
@@ -100,6 +116,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             mTextThree = itemView.findViewById(R.id.minuteText);
             deleteEvent = itemView.findViewById(R.id.deleteEventButton);
             modifyEvent = itemView.findViewById(R.id.modifyEventButton);
+            optionsToggle = itemView.findViewById(R.id.optionsButton);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

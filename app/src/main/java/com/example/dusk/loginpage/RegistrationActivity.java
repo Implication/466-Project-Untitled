@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
 RegistrationActivity
@@ -21,6 +23,10 @@ RegistrationActivity
 * */
 public class RegistrationActivity extends AppCompatActivity {
 
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_PASSWORD_REGEX =
+            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!\\Q\\?[]{}.\\E#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
     private EditText username_input, email_input, password_input,fullname_input;
     private Button Submit, Reset;
     private TextView Signup_Message;
@@ -41,47 +47,50 @@ public class RegistrationActivity extends AppCompatActivity {
         Reset = findViewById(R.id.Reset);
         //We want to submit the changes we made to registration page to the database
         Submit.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-                                          String un = username_input.getText().toString();
-                                          String email = email_input.getText().toString();
-                                          String pwd = password_input.getText().toString();
-                                          String fullname = fullname_input.getText().toString();
-                                          //We check to see if any of the settigns are empty
-                                          if (un.isEmpty() || email.isEmpty() || pwd.isEmpty() || fullname.isEmpty() || pwd.length() < 8) {
-                                              if (un.isEmpty()) {
-                                                  username_input.setError("Please enter username");
-                                              }
-                                              if (email.isEmpty()) {
-                                                  email_input.setError("Please enter email");
-                                              }
-                                              if (pwd.isEmpty()) {
-                                                  password_input.setError("Please enter password");
-                                              }
-                                              if (fullname.isEmpty()) {
-                                                  fullname_input.setError("Please enter Fullname");
-                                              }
-                                              if (pwd.length() < 8) {
-                                                  password_input.setError("Password must be at least 8 characters");
-                                              }
-                                          }
-                                          else {
-                                              //We check to see if the user is in the system
-                                                  if (db.registrationverification(un)) {
-                                                      Accounts acc = new Accounts(un, pwd, email, fullname);
-                                                      db.addUser(acc);
-                                                      StyleableToast.makeText(getApplicationContext(), "Your account has been created", R.style.toastTheme).show();
-                                                      Intent intent = new Intent(RegistrationActivity.this, LoginPageActivity.class);
-                                                      startActivity(intent);
-                                                  } else {
+                String un = username_input.getText().toString();
+                String email = email_input.getText().toString();
+                String pwd = password_input.getText().toString();
+                String fullname = fullname_input.getText().toString();
+                //We check to see if any of the settigns are empty
+                Matcher e = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+                Matcher p = VALID_PASSWORD_REGEX.matcher(pwd);
+                if (un.isEmpty() || email.isEmpty() || pwd.isEmpty() || fullname.isEmpty() || !p.find() || !e.find()) {
+                    if (un.isEmpty()) {
+                        username_input.setError("Please enter username");
+                    }
+                    if (!e.find()) {
+                        email_input.setError("Please enter a proper email address");
+                    }
+                    if (pwd.isEmpty()) {
+                        password_input.setError("Please enter password");
+                    }
+                    if (fullname.isEmpty()) {
+                        fullname_input.setError("Please enter Fullname");
+                    }
+                    if (!p.find()) {
+                        password_input.setError("Password must have, at least 8 chracters, 1 uppercase letter, and 1 special character");
+                    }
 
-                                                      username_input.setError("Username Already Taken");
-                                                      StyleableToast.makeText(getApplicationContext(), "Error: Username already exists", R.style.toastTheme).show();
-                                                  }
-                                              }
-                                          }
-            });
+                }
+                else {
+                    //We check to see if the user is in the system
+                    if (db.registrationverification(un)) {
+                        Accounts acc = new Accounts(un, pwd, email, fullname);
+                        db.addUser(acc);
+                        StyleableToast.makeText(getApplicationContext(), "Your account has been created", R.style.toastTheme).show();
+                        Intent intent = new Intent(RegistrationActivity.this, LoginPageActivity.class);
+                        startActivity(intent);
+                    } else {
+
+                        username_input.setError("Username Already Taken");
+                        StyleableToast.makeText(getApplicationContext(), "Error: Username already exists", R.style.toastTheme).show();
+                    }
+                }
+            }
+        });
         Reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
