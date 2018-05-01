@@ -21,9 +21,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private DbHelper db;
     private String username;
 
-    public Adapter(ArrayList<CardsJava> cards) {
-        mList = cards;
-    }
+    public Adapter(ArrayList<CardsJava> cards) {mList = cards;}
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
@@ -38,6 +36,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         final CardsJava currentCard = mList.get(position);
         db = new DbHelper(holder.mContext);
         holder.mTextOne.setText(currentCard.getTitleText());
@@ -62,15 +61,29 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 StaticUsername staticUsername = new StaticUsername();
                 String un = StaticUsername.username;
                 Intent intent = new Intent(holder.mContext, ModifyEvent.class);
-                intent.putExtra("username", un);
-                intent.putExtra("title", currentCard.getTitleText());
+                intent.putExtra(un, "username");
+                intent.putExtra(currentCard.getTitleText(), "title");
+                intent.putExtra(currentCard.getMHour(), "hour");
+                intent.putExtra(currentCard.getMMinute(), "minute");
+                holder.mContext.startActivity(intent);
+            }
+        });
+        holder.mTextOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StaticUsername staticUsername = new StaticUsername();
+                String un = StaticUsername.username;
+                Intent intent = new Intent(holder.mContext, EventSummaryActivity.class);
+                intent.putExtra(un, "username");
+                intent.putExtra("title",currentCard.getTitleText());
                 intent.putExtra("hour", currentCard.getMHour());
-                intent.putExtra("minute", currentCard.getMMinute());
+                intent.putExtra("min", currentCard.getMMinute());
+                //intent.putExtra("description", event.getDesc());
                 holder.mContext.startActivity(intent);
             }
         });
     }
-    
+
     @Override
     public int getItemCount() {
 
@@ -92,6 +105,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         private Button modifyEvent;
         private Context mContext;
 
+
         public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             mContext = itemView.getContext();
@@ -110,6 +124,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
                         }
+
                     }
                 }
             });
