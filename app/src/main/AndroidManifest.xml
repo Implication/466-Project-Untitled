@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dusk.loginpage">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -35,7 +37,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity android:name=".ModifyEvent" />
-        <activity android:name=".ForgotPasswordActivity"></activity>
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity
+            android:name=".EventSummaryActivity"
+            android:label="@string/title_activity_event_summary"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

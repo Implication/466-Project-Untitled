@@ -18,4 +18,5 @@
     <string name="Signup">Create your account</string>
     <string name="Username_Error">ERROR!! Username is already being used</string>
     <string name="fullname">Full Name</string>
+    <string name="title_activity_event_summary">EventSummaryActivity</string>
 </resources>

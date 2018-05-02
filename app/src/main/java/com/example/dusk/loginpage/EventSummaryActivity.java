@@ -1,0 +1,37 @@
+package com.example.dusk.loginpage;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
+
+/**
+ * Created by Lisa on 4/29/2018.
+ */
+
+public class EventSummaryActivity extends AppCompatActivity {
+    private DbHelper db;
+    TextView title, descr, min, hour;
+    private static final String TAG= "EventSummaryActivity";
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState){
+        db = new DbHelper(this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_event_summary);
+        String username = getIntent().getStringExtra("un");
+        String titleText = getIntent().getStringExtra("Title");
+        title = findViewById(R.id.eventTitle);
+        descr = findViewById(R.id.eventDescription);
+        min = findViewById(R.id.eventMinute);
+        hour = findViewById(R.id.eventHour);
+
+        title.setText("Title : " +getIntent().getStringExtra("Title"));
+        descr.setText("Description : " + db.getEventInfo(username, titleText));
+        min.setText("" +getIntent().getStringExtra("Min"));
+        hour.setText("Time: " +getIntent().getStringExtra("Hour"));
+
+    }
+
+
+}

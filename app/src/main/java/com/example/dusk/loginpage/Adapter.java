@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -84,6 +85,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 holder.mContext.startActivity(intent);
             }
         });
+        holder.mTextOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StaticUsername staticUsername = new StaticUsername();
+                String un = StaticUsername.username;
+                Intent intent = new Intent(holder.mContext, EventSummaryActivity.class);
+                intent.putExtra("un", un);
+                intent.putExtra("Title", currentCard.getTitleText());
+                intent.putExtra("Hour", currentCard.getMHour());
+                intent.putExtra("Min", currentCard.getMMinute());
+                holder.mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -108,7 +122,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public ImageButton optionsToggle;
         private Context mContext;
 
-        public ViewHolder(View itemView, final OnItemClickListener listener) {
+        public ViewHolder(final View itemView, final OnItemClickListener listener) {
             super(itemView);
             mContext = itemView.getContext();
             mTextOne = itemView.findViewById(R.id.titleText);
