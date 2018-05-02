@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
@@ -44,10 +45,9 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         //We get the assoicated tasklist by a username
         taskList = db.loadTaskList(username);
         if(taskList.size() == 0) {
-            taskList.add(new CardsJava("No Tasks", "", ""));
+            taskList.add(new CardsJava("No Tasks", "", "", ""));
         }
         buildRecyclerView();
-
         mDrawerLayout = findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 

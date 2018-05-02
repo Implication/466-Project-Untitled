@@ -37,7 +37,7 @@
             android:layout_below="@+id/titleText"
             android:layout_marginStart="4dp"
             android:layout_toRightOf="@id/hourText"
-            android:text=":"
+            android:text=""
             android:textSize="15sp" />
         <TextView
             android:id="@+id/minuteText"

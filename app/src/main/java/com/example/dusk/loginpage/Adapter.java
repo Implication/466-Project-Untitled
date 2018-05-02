@@ -45,6 +45,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.mTextOne.setText(currentCard.getTitleText());
         holder.mTextTwo.setText((currentCard.getMHour()));
         holder.mTextThree.setText((currentCard.getMMinute()));
+        holder.mColon.setText((currentCard.getMColon()));
         holder.optionsToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,6 +118,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public TextView mTextOne;
         public TextView mTextTwo;
         public TextView mTextThree;
+        public TextView mColon;
         public Button deleteEvent;
         public Button modifyEvent;
         public ImageButton optionsToggle;
@@ -128,6 +130,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             mTextOne = itemView.findViewById(R.id.titleText);
             mTextTwo = itemView.findViewById(R.id.hourText);
             mTextThree = itemView.findViewById(R.id.minuteText);
+            mColon = itemView.findViewById(R.id.colon);
             deleteEvent = itemView.findViewById(R.id.deleteEventButton);
             modifyEvent = itemView.findViewById(R.id.modifyEventButton);
             optionsToggle = itemView.findViewById(R.id.optionsButton);

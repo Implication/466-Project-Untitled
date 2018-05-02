@@ -44,7 +44,8 @@ public class addEventActivity extends AppCompatActivity {
 
         EditText minText = findViewById(R.id.minute);
         String minString = minText.getText().toString();
-        if(t.isEmpty() || hourString.isEmpty() || minString.isEmpty()){
+        if(t.isEmpty() || hourString.isEmpty() || minString.isEmpty() || Integer.parseInt(hourString) < 0 || Integer.parseInt(hourString) > 24
+                || Integer.parseInt(minString) < 0 || Integer.parseInt(minString) > 60){
             if(t.isEmpty()){
                 title.setError("Please enter a title");
             }
@@ -54,6 +55,13 @@ public class addEventActivity extends AppCompatActivity {
             if(minString.isEmpty()){
                 minText.setError("Please enter the minutes");
             }
+            if (Integer.parseInt(hourString) < 0 || Integer.parseInt(hourString) > 24) {
+                hourText.setError("Hour needs to be between 0 and 24");
+            }
+            if (Integer.parseInt(minString) < 0 || Integer.parseInt(minString) > 60) {
+                minText.setError("Minute needs to be between 0 and 60");
+            }
+
         }
         else {
             db.addTask(un, t, d, hourString, minString);

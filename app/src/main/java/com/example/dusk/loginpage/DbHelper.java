@@ -168,7 +168,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 String name = result.getString(result.getColumnIndex(TTCOL1));
                 String hour = result.getString(result.getColumnIndex(TTCOL3));
                 String min = result.getString(result.getColumnIndex(TTCOL4));
-                eventList.add(new CardsJava(name, hour, new DecimalFormat("00").format(Integer.parseInt(min))));
+                eventList.add(new CardsJava(name, hour, new DecimalFormat("00").format(Integer.parseInt(min)), ":"));
             }
         }
         return eventList;
