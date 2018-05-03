@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -43,9 +45,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         final CardsJava currentCard = mList.get(position);
         db = new DbHelper(holder.mContext);
         holder.mTextOne.setText(currentCard.getTitleText());
-        holder.mTextTwo.setText((currentCard.getMHour()));
+        if (currentCard.getMHour().equals(""))
+        {
+            holder.mTextTwo.setText((currentCard.getMHour()));
+        }
+        else {
+            holder.mTextTwo.setText("Time: " + (currentCard.getMHour()));
+        }
         holder.mTextThree.setText((currentCard.getMMinute()));
         holder.mColon.setText((currentCard.getMColon()));
+        if (currentCard.getMMonth().equals("")) {
+            holder.mMonth.setText(currentCard.getMMonth());
+        }
+        else {
+            holder.mMonth.setText("Date: " + currentCard.getMMonth());
+        }
+        holder.mDay.setText(currentCard.getMDay());
+        holder.mSlash.setText(currentCard.getMSlash());
         holder.optionsToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +99,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 intent.putExtra("title", currentCard.getTitleText());
                 intent.putExtra("hour", currentCard.getMHour());
                 intent.putExtra("minute", currentCard.getMMinute());
+                intent.putExtra("month", currentCard.getMMonth());
+                intent.putExtra("day", currentCard.getMDay());
                 holder.mContext.startActivity(intent);
             }
         });
@@ -96,6 +114,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 intent.putExtra("Title", currentCard.getTitleText());
                 intent.putExtra("Hour", currentCard.getMHour());
                 intent.putExtra("Min", currentCard.getMMinute());
+                intent.putExtra("Month", currentCard.getMMonth());
+                intent.putExtra("Day", currentCard.getMDay());
                 holder.mContext.startActivity(intent);
             }
         });
@@ -119,6 +139,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public TextView mTextTwo;
         public TextView mTextThree;
         public TextView mColon;
+        public TextView mMonth;
+        public TextView mDay;
+        public TextView mSlash;
         public Button deleteEvent;
         public Button modifyEvent;
         public ImageButton optionsToggle;
@@ -131,6 +154,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             mTextTwo = itemView.findViewById(R.id.hourText);
             mTextThree = itemView.findViewById(R.id.minuteText);
             mColon = itemView.findViewById(R.id.colon);
+            mMonth = itemView.findViewById(R.id.monthText);
+            mDay = itemView.findViewById(R.id.dayText);
+            mSlash = itemView.findViewById(R.id.slash);
             deleteEvent = itemView.findViewById(R.id.deleteEventButton);
             modifyEvent = itemView.findViewById(R.id.modifyEventButton);
             optionsToggle = itemView.findViewById(R.id.optionsButton);

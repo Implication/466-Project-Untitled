@@ -24,11 +24,11 @@ public class ModifyEvent extends AppCompatActivity {
         String hour = intent.getStringExtra("hour");
         String minute = intent.getStringExtra("minute");
         String username = intent.getStringExtra("username");
+        String month = intent.getStringExtra("month");
+        String day = intent.getStringExtra("day");
         String desc = db.getEventInfo(username, title);
-        Log.i("DESC", desc);
-
         //Set edit text views to the current card info
-        EditText titleText = findViewById(R.id.titleMod);
+        final EditText titleText = findViewById(R.id.titleMod);
         titleText.setText(title);
         EditText descText = findViewById(R.id.descriptionMod);
         descText.setText(desc);
@@ -36,6 +36,10 @@ public class ModifyEvent extends AppCompatActivity {
         hourText.setText(hour);
         EditText minuteText = findViewById(R.id.minuteMod);
         minuteText.setText(minute);
+        EditText monthText = findViewById(R.id.monthMod);
+        monthText.setText(month);
+        EditText dayText = findViewById(R.id.minuteMod);
+        dayText.setText(day);
         Button modButton = findViewById(R.id.modButton);
         db = new DbHelper(this);
         modButton.setOnClickListener(new View.OnClickListener(){
@@ -50,10 +54,42 @@ public class ModifyEvent extends AppCompatActivity {
             String hourMod = hourSend.getText().toString();
             EditText minuteSend = findViewById(R.id.minuteMod);
             String minuteMod = minuteSend.getText().toString();
+            EditText monthSend = findViewById(R.id.monthMod);
+            String monthMod = monthSend.getText().toString();
+            EditText daySend = findViewById(R.id.dayMod);
+            String dayMod = daySend.getText().toString();
 
-            db.modifyEvent(oldTitle, titleMod, editMod, hourMod, minuteMod);
-            Intent intent = new Intent(ModifyEvent.this,MainPageActivity.class);
-            startActivity(intent);
+            if(titleMod.isEmpty() || hourMod.isEmpty() || minuteMod.isEmpty() || Integer.parseInt(hourMod) < 0 || Integer.parseInt(hourMod) > 24
+                    || Integer.parseInt(minuteMod) < 0 || Integer.parseInt(minuteMod) > 60 || Integer.parseInt(monthMod) < 1 || Integer.parseInt(monthMod) > 12
+                    || Integer.parseInt(dayMod) < 1 || Integer.parseInt(dayMod) > 31){
+                if(titleMod.isEmpty()){
+                    titleSend.setError("Please enter a title");
+                }
+                if(hourMod.isEmpty()){
+                    hourSend.setError("Please enter the hour string");
+                }
+                if(minuteMod.isEmpty()){
+                    minuteSend.setError("Please enter the minutes");
+                }
+                if (Integer.parseInt(hourMod) < 0 || Integer.parseInt(hourMod) > 24) {
+                    hourSend.setError("Hour needs to be between 0 and 24");
+                }
+                if (Integer.parseInt(minuteMod) < 0 || Integer.parseInt(minuteMod) > 60) {
+                    minuteSend.setError("Minute needs to be between 0 and 60");
+                }
+                if (Integer.parseInt(monthMod) < 0 || Integer.parseInt(monthMod) > 12) {
+                    monthSend.setError("Month needs to be between 0 and 12");
+                }
+                if (Integer.parseInt(dayMod) < 0 || Integer.parseInt(dayMod) > 31) {
+                    daySend.setError("Day needs to be between 0 and 31");
+                }
+
+            }
+            else {
+                db.modifyEvent(oldTitle, titleMod, editMod, hourMod, minuteMod, monthMod, dayMod);
+                Intent intent = new Intent(ModifyEvent.this,MainPageActivity.class);
+                startActivity(intent);
+            }
         }
     });
     }

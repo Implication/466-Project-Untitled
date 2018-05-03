@@ -45,7 +45,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         //We get the assoicated tasklist by a username
         taskList = db.loadTaskList(username);
         if(taskList.size() == 0) {
-            taskList.add(new CardsJava("No Tasks", "", "", ""));
+            taskList.add(new CardsJava("No Tasks", "", "", "", "", "", ""));
         }
         buildRecyclerView();
         mDrawerLayout = findViewById(R.id.drawerLayout);

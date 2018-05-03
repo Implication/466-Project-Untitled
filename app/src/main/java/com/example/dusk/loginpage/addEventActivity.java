@@ -44,8 +44,15 @@ public class addEventActivity extends AppCompatActivity {
 
         EditText minText = findViewById(R.id.minute);
         String minString = minText.getText().toString();
+
+        EditText monthText = findViewById(R.id.month);
+        String monthString = monthText.getText().toString();
+
+        EditText dayText = findViewById(R.id.day);
+        String dayString = dayText.getText().toString();
         if(t.isEmpty() || hourString.isEmpty() || minString.isEmpty() || Integer.parseInt(hourString) < 0 || Integer.parseInt(hourString) > 24
-                || Integer.parseInt(minString) < 0 || Integer.parseInt(minString) > 60){
+                || Integer.parseInt(minString) < 0 || Integer.parseInt(minString) > 60 || Integer.parseInt(monthString) < 1 || Integer.parseInt(monthString) > 12
+                || Integer.parseInt(dayString) < 1 || Integer.parseInt(dayString) > 31){
             if(t.isEmpty()){
                 title.setError("Please enter a title");
             }
@@ -61,10 +68,16 @@ public class addEventActivity extends AppCompatActivity {
             if (Integer.parseInt(minString) < 0 || Integer.parseInt(minString) > 60) {
                 minText.setError("Minute needs to be between 0 and 60");
             }
+            if (Integer.parseInt(monthString) < 0 || Integer.parseInt(monthString) > 12) {
+                monthText.setError("Month needs to be between 0 and 12");
+            }
+            if (Integer.parseInt(dayString) < 0 || Integer.parseInt(dayString) > 31) {
+                dayText.setError("Day needs to be between 0 and 31");
+            }
 
         }
         else {
-            db.addTask(un, t, d, hourString, minString);
+            db.addTask(un, t, d, hourString, minString, monthString, dayString);
             checkFlag = "addEvent";
 
             StyleableToast.makeText(this, "Event Added", R.style.toastTheme).show();

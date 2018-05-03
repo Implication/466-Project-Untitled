@@ -45,6 +45,8 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String TTCOL2 = "taskDesc";
     private static final String TTCOL3 = "taskHour";
     private static final String TTCOL4 = "taskMin";
+    private static final String TTCOL5 = "taskMonth";
+    private static final String TTCOL6 = "taskDay";
 
     //Constructor
     public DbHelper(Context context){
@@ -69,6 +71,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 "taskDesc, " +
                 "taskHour NOT NULL, " +
                 "taskMin NOT NULL, " +
+                "taskMonth NOT NULL, " +
+                "taskDay NOT NULL, " +
                 "FOREIGN KEY(USERNAME) REFERENCES user_table(USERNAME)" +
                 ")";
         sqLiteDatabase.execSQL(createAnother);
@@ -136,7 +140,7 @@ public class DbHelper extends SQLiteOpenHelper {
      * Paramaters: taskName, taskDesc, taskHour, taskMin
      */
 
-    public boolean addTask(String username,String taskName, String taskDesc, String taskHour, String taskMin){
+    public boolean addTask(String username,String taskName, String taskDesc, String taskHour, String taskMin, String taskMonth, String taskDay){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -145,6 +149,8 @@ public class DbHelper extends SQLiteOpenHelper {
         cv.put(TTCOL2,taskDesc);
         cv.put(TTCOL3,taskHour);
         cv.put(TTCOL4,taskMin);
+        cv.put(TTCOL5, taskMonth);
+        cv.put(TTCOL6, taskDay);
 
         long result = db.insert(TASK_TABLE,null,cv);
         return result != -1;
@@ -168,7 +174,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 String name = result.getString(result.getColumnIndex(TTCOL1));
                 String hour = result.getString(result.getColumnIndex(TTCOL3));
                 String min = result.getString(result.getColumnIndex(TTCOL4));
-                eventList.add(new CardsJava(name, hour, new DecimalFormat("00").format(Integer.parseInt(min)), ":"));
+                String month = result.getString(result.getColumnIndex(TTCOL5));
+                String day = result.getString(result.getColumnIndex(TTCOL6));
+                eventList.add(new CardsJava(name, hour, new DecimalFormat("00").format(Integer.parseInt(min)), ":", month, day, "/"));
             }
         }
         return eventList;
@@ -233,7 +241,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void modifyEvent(String oldTitle, String taskName, String taskDesc, String taskHour, String taskMin) {
+    public void modifyEvent(String oldTitle, String taskName, String taskDesc, String taskHour, String taskMin, String taskMonth, String taskDay) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         if (Integer.parseInt(taskMin) < 10) {
@@ -244,7 +252,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 "SET taskName = \'" + taskName + "\', " +
                 "taskDesc = \'" + taskDesc + "\', " +
                 "taskHour = \'" + taskHour + "\', " +
-                "taskMin = \'" + taskMin + "\' " +
+                "taskMin = \'" + taskMin + "\', " +
+                "taskMonth = \'" + taskMonth + "\', " +
+                "taskday = \'" + taskDay + "\' " +
                 "WHERE taskName = '" + oldTitle + "\'";
         db.execSQL(Query);
     }
