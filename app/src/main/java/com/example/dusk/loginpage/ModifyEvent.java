@@ -20,7 +20,6 @@ public class ModifyEvent extends AppCompatActivity {
         //Get info from selected card (title, hour, minute, description
         String title = intent.getStringExtra("title");
         oldTitle = title;
-        Log.i("Title", oldTitle);
         String hour = intent.getStringExtra("hour");
         String minute = intent.getStringExtra("minute");
         String username = intent.getStringExtra("username");
@@ -38,7 +37,7 @@ public class ModifyEvent extends AppCompatActivity {
         minuteText.setText(minute);
         EditText monthText = findViewById(R.id.monthMod);
         monthText.setText(month);
-        EditText dayText = findViewById(R.id.minuteMod);
+        EditText dayText = findViewById(R.id.dayMod);
         dayText.setText(day);
         Button modButton = findViewById(R.id.modButton);
         db = new DbHelper(this);

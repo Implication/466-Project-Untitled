@@ -2,44 +2,45 @@ package com.example.dusk.loginpage;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.EventLog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * Created by Lisa on 4/29/2018.
- */
-
 public class EventSummaryActivity extends AppCompatActivity {
     private DbHelper db;
-    TextView title, descr, min, hour, month, day;
-    Button returnMain = findViewById(R.id.returnButton);
-    private static final String TAG= "EventSummaryActivity";
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
-        db = new DbHelper(this);
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_summary);
-        String username = getIntent().getStringExtra("un");
-        String titleText = getIntent().getStringExtra("Title");
-        title = findViewById(R.id.eventTitle);
-        descr = findViewById(R.id.eventDescription);
-        min = findViewById(R.id.eventMinute);
-        hour = findViewById(R.id.eventHour);
-        month = findViewById(R.id.eventMonth);
-        day = findViewById(R.id.eventDay);
+        db = new DbHelper(this);
+        String eventTitle = getIntent().getStringExtra("Title");
+        String eventUN = getIntent().getStringExtra("un");
+        String eventDesc = db.getEventInfo(eventUN, eventTitle);
+        String eventMonth = getIntent().getStringExtra("Month");
+        String eventDay = getIntent().getStringExtra("Day");
+        String eventHour = getIntent().getStringExtra("Hour");
+        String eventMin = getIntent().getStringExtra("Min");
 
-        title.setText("Title : " +getIntent().getStringExtra("Title"));
-        descr.setText("Description : " + db.getEventInfo(username, titleText));
-        min.setText("" +getIntent().getStringExtra("Min"));
-        hour.setText("Time: " +getIntent().getStringExtra("Hour"));
-        month.setText("Date: " + getIntent().getStringExtra("Month"));
-        day.setText("" + getIntent().getStringExtra("Day"));
+        TextView title = findViewById(R.id.eventTitle);
+        title.setText("Title: " + eventTitle);
+        TextView desc = findViewById(R.id.eventDescription);
+        desc.setText("Description: " + eventDesc);
+        TextView month = findViewById(R.id.eventMonth);
+        month.setText("Date: " + eventMonth);
+        TextView day = findViewById(R.id.eventDay);
+        day.setText(eventDay);
+        TextView hour = findViewById(R.id.eventHour);
+        hour.setText("Time: " + eventHour);
+        TextView min = findViewById(R.id.eventMinute);
+        min.setText(eventMin);
 
-        returnMain.setOnClickListener(new View.OnClickListener() {
+        Button returnButton = findViewById(R.id.returnButton);
+        returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EventSummaryActivity.this, MainPageActivity.class);
@@ -48,6 +49,5 @@ public class EventSummaryActivity extends AppCompatActivity {
         });
 
     }
-
 
 }

@@ -41,7 +41,7 @@
         <activity
             android:name=".EventSummaryActivity"
             android:label="@string/title_activity_event_summary"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
