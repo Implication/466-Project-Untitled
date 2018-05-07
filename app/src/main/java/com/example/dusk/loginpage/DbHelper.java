@@ -163,9 +163,18 @@ public class DbHelper extends SQLiteOpenHelper {
     * paramaters: username
     * Returns an arraylist of all the tasks associated with a username in the task table
     * */
+
+    /*private static final String TASK_TABLE = "TASK";
+    private static final String TTCOL1 = "taskName";
+    private static final String TTCOL2 = "taskDesc";
+    private static final String TTCOL3 = "taskHour";
+    private static final String TTCOL4 = "taskMin";
+    private static final String TTCOL5 = "taskMonth";
+    private static final String TTCOL6 = "taskDay";*/
+
     public ArrayList loadTaskList(String username){
         SQLiteDatabase db = this.getReadableDatabase();
-        String Query = String.format("SELECT * FROM TASK WHERE USERNAME = \'%s\'",username);
+        String Query = String.format("SELECT * FROM TASK WHERE USERNAME = \'%s\' ORDER BY taskMonth ASC, taskDay ASC, taskHour ASC, taskMin ASC",username);
         ArrayList<CardsJava> eventList = new ArrayList<>();
 
         Cursor result = db.rawQuery(Query,null);
