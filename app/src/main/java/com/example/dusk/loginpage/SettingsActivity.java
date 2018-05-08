@@ -23,6 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!\\Q\\?[]{}.\\E#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
     Button btnCancel;
     Button btnSave;
+    Button btnDelete;
     DbHelper OrganizeMyLifeDB;
     private String username;
     private EditText fullname;
@@ -54,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         btnCancel = findViewById(R.id.cancelButton);
         btnSave = findViewById(R.id.saveButton);
+        btnDelete = findViewById(R.id.deleteButton);
 
         //We want to cancel any settings changes
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +69,24 @@ public class SettingsActivity extends AppCompatActivity {
              */
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this, MainPageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //We want to cancel any settings changes
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            /**
+             * onClick Action for @code btnLogin
+             * If the inputed userID and password entered for
+             * @code username and @code password is valid, this will
+             * bring the user to the main app page, or else it will
+             * prompt a toast to the user of invalid login credentials
+             */
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, LoginPageActivity.class);
+                StyleableToast.makeText(getApplicationContext(), "Settings Saved", R.style.toastTheme).show();
+                OrganizeMyLifeDB.deleteDatabase(username, email.getText().toString(), newpassword.getText().toString(), fullname.getText().toString());
                 startActivity(intent);
             }
         });
