@@ -190,6 +190,16 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(Query);
     }
 
+    /*
+    * deleteDatabase
+    * purpose: deletes the user account and its database
+    * paramaters: un, email, pwd, fullname
+    * */
+    public void deleteDatabase(String un, String email, String pwd, String fullname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+USER_TABLE+" where USERNAME='"+un+"'");
+    }
+
 
     /*
     * SettingsValues
