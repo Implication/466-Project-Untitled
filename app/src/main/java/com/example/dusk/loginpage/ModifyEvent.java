@@ -40,7 +40,15 @@ public class ModifyEvent extends AppCompatActivity {
         EditText dayText = findViewById(R.id.dayMod);
         dayText.setText(day);
         Button modButton = findViewById(R.id.modButton);
+        Button returnButton = findViewById(R.id.returnMainButton);
         db = new DbHelper(this);
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ModifyEvent.this, MainPageActivity.class);
+                startActivity(intent);
+            }
+        });
         modButton.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View v){

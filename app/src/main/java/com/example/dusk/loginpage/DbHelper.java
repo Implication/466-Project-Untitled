@@ -236,6 +236,16 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("delete from "+TASK_TABLE+" where taskName='"+taskName+"'");
     }
 
+    /*
+    * deleteDatabase
+    * purpose: deletes the user account and its database
+    * paramaters: un, email, pwd, fullname
+    * */
+    public void deleteDatabase(String un, String email, String pwd, String fullname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+USER_TABLE+" where USERNAME='"+un+"'");
+    }
+
     public String getEventInfo(String username, String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         String Query = "SELECT "+TTCOL2+" FROM "+TASK_TABLE+" WHERE taskName='"+title+"' AND USERNAME = '"+username+"'";
